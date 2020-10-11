@@ -15,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.devsuperior.dspesquisa.dto.CategoryDTO;
 import com.devsuperior.dspesquisa.entities.Category;
 import com.devsuperior.dspesquisa.repositories.CategoryRepository;
+import com.devsuperior.dspesquisa.services.exceptions.DatabaseException;
 import com.devsuperior.dspesquisa.services.exceptions.ResourceNotFoundException;
 
 @Service
@@ -63,7 +64,7 @@ public class CategoryService {
 		} catch (EmptyResultDataAccessException e) {
 			throw new ResourceNotFoundException("Id Not Found " + id);			
 		} catch (DataIntegrityViolationException e) {
-			throw new ResourceNotFoundException("Integrity violation");
+			throw new DatabaseException("Integrity violation");
 		}
 		
 	}
