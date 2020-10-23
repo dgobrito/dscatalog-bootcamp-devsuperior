@@ -100,10 +100,6 @@ public class Product implements Serializable {
 		this.date = date;
 	}
 
-	public static long getSerialversionuid() {
-		return serialVersionUID;
-	}
-
 	public Set<Category> getCategories() {
 		return categories;
 	}
