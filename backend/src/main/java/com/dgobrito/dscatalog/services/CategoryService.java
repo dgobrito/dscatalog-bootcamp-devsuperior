@@ -71,7 +71,7 @@ public class CategoryService {
 			throw new ResourceNotFoundException("Id not found " + id);			
 		}
 	}
-
+	
 	public void delete(Long id) {
 		try {
 			repository.deleteById(id);
