@@ -54,7 +54,7 @@ public class ProductServiceIT {
 		int size = 10;
 		PageRequest pageRequest = PageRequest.of(page, size);
 		
-		Page<ProductDTO> result = service.findAllPaged(pageRequest);
+		Page<ProductDTO> result = service.findAllPaged(0L, "", pageRequest);
 		
 		Assertions.assertFalse(result.isEmpty());
 		Assertions.assertEquals(page, result.getNumber());
@@ -68,7 +68,7 @@ public class ProductServiceIT {
 		int size = 10;
 		PageRequest pageRequest = PageRequest.of(page, size);
 		
-		Page<ProductDTO> result = service.findAllPaged(pageRequest);
+		Page<ProductDTO> result = service.findAllPaged(0L, "", pageRequest);
 		
 		Assertions.assertTrue(result.isEmpty());
 	}
@@ -77,7 +77,7 @@ public class ProductServiceIT {
 	public void findAllPagedShouldReturnSortedPageWhenSortByName() {
 		PageRequest pageRequest = PageRequest.of(0, 10, Sort.by("name"));
 		
-		Page<ProductDTO> result = service.findAllPaged(pageRequest);
+		Page<ProductDTO> result = service.findAllPaged(0L, "", pageRequest);
 		
 		Assertions.assertFalse(result.isEmpty());
 		Assertions.assertTrue(result.getSize() == 10);
