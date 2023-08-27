@@ -10,6 +10,7 @@ import org.springframework.core.Ordered;
 import org.springframework.core.env.Environment;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableResourceServer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.ResourceServerConfigurerAdapter;
 import org.springframework.security.oauth2.config.annotation.web.configurers.ResourceServerSecurityConfigurer;
@@ -32,12 +33,20 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
 	private static final String[] PUBLIC = { "/oauth/token", "/h2-console/**" };
 	private static final String[] OPERATOR_OR_ADMIN = { "/products/**", "/categories/**" };
 	private static final String[] ADMIN = { "/users/**" };
+	
+	private static final String[] SWAGGER = { "/v2/api-docs", "/configuration/ui", "/swagger-resources/**",
+			"/configuration/security", "/swagger-ui.html", "/webjars/**" };	
 
 	@Override
 	public void configure(ResourceServerSecurityConfigurer resources) throws Exception {
 		resources.tokenStore(tokenStore);
 	}
-
+	
+	public void configure(WebSecurity web) throws Exception {
+		web.ignoring().mvcMatchers(HttpMethod.OPTIONS, "/**");
+		web.ignoring().mvcMatchers(SWAGGER);
+	}
+	
 	@Override
 	public void configure(HttpSecurity http) throws Exception {
 		
@@ -48,6 +57,7 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
 		
 		http.authorizeRequests()
 		.antMatchers(PUBLIC).permitAll()
+		.antMatchers(SWAGGER).permitAll()
 		.antMatchers(HttpMethod.GET, OPERATOR_OR_ADMIN).permitAll()
 		.antMatchers(OPERATOR_OR_ADMIN).hasAnyRole("OPERATOR", "ADMIN")
 		.antMatchers(ADMIN).hasRole("ADMIN")
